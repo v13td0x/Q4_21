@@ -18,7 +18,7 @@ Input: nums = [4,1,2,1,2]
 Output: 4
 ```
 
-Ex3:
+***Ex3:***
 
 ```
 Input: nums = [1]
@@ -28,6 +28,11 @@ Output: 1
 ---
 
 solution:
+```
+0 xor x = x
+x xor x = 0
+(a xor b) xor c = a xor (b xor c)
+```
 
 ```cpp
 int x = 0;
