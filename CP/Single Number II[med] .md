@@ -35,12 +35,12 @@ int ans = 0;
 // int 32bit
 // we are working in bit
 for(int i = 0; i < 32; ++i){
-	int sum = 0;
+	int count = 0;
 	for(int j = 0; j < nums.size(); j++){
 		if((nums[j] >> i)& 1)
-			sum++;
+			count++;
 	}
-	if(sum % 3 != 0)
+	if(count % 3 != 0)
 		ans |= (1 << i);
 }
 return ans;
