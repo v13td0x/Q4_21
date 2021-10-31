@@ -27,9 +27,10 @@ Output: 99
 - Each element in `nums` appears exactly **three times** except for one element which appears **once**.
 
 ---
-
-Solution:
-
+	
+<details>
+<summary>solution.cpp</summary>
+	
 ```cpp
 int ans = 0;
 // int 32bit
@@ -43,5 +44,7 @@ for(int i = 0; i < 32; ++i){
 	if(count % 3 != 0)
 		ans |= (1 << i);
 }
-return ans;
+return ans;	
 ```
+</details>
+
