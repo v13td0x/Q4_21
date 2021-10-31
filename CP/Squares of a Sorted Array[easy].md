@@ -23,14 +23,19 @@ Output: [4,9,9,49,121]
 - `1 <= nums.length <= 104`
 - `104 <= nums[i] <= 104`
 - `nums` is sorted in **non-decreasing** order.
-
+---
+<details>
+<summary>solution.cpp</summary>
+	
 ```cpp
 int len = size(nums);
 int L = 0, R = len - 1;
 vector<int> res[len];
 for(int i = len-1; i > -1; i--){
-	if(abs(nums[R]) > abs(nums[L]))
-		res[i] = nums[R] * nums[R--];
-	else
-		res[i] = nums[L] * nums[L++];
+  if(abs(nums[R]) > abs(nums[L]))
+    res[i] = nums[R] * nums[R--];
+  else
+    res[i] = nums[L] * nums[L++];
+}
 ```
+</details>
