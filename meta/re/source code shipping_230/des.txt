@@ -1,0 +1,2 @@
+Ever wondered what was in those absolutely massive desktop apps such as Slack, Discord, and other apps built using Electron JS? Well we've created a small Electron-based app with a flag embedded in its source code for your perusal.
+You don't need to install or run the app to get the flag.
