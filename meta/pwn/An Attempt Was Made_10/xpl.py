@@ -2,14 +2,7 @@
 from pwn import *
 
 def start(argv=[], *a, **kw):
-  if args.GDB:  # GDB NOASLR
-    context.terminal = ["/mnt/c/wsl-terminal/open-wsl.exe", "-e"]
-    return gdb.debug([exe] + argv, gdbscript=gs, *a, **kw)
-  elif args.REMOTE:
     return remote("host.cg21.metaproblems.com", "3030", *a, **kw)
-  else:
-    return process([exe] + argv, *a, **kw)
-    # return process(['./ld-2.31.so', '--preload', './libc.so.6', exe] + argv, *a, **kw)
 
 gs = '''
 init-pwndbg
